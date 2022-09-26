@@ -23,17 +23,17 @@ Config.configByPedType[PED_TYPES.PROSTITUTE] = {
 }
 
 Config.configByPedType[PED_TYPES.COP] = {
-    moneyOnKill = 85,
+    moneyOnKill = 100,
     showNotificationOnKill = true
 }
 
 Config.configByPedType[PED_TYPES.SWAT] = {
-    moneyOnKill = 150,
+    moneyOnKill = 200,
     showNotificationOnKill = true
 }
 
 Config.configByPedType[PED_TYPES.ARMY] = {
-    moneyOnKill = 500,
+    moneyOnKill = 1000,
     showNotificationOnKill = true
 }
 

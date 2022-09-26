@@ -37,7 +37,11 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
             showNotification = configPedType.showNotificationOnKill
         end
         if money ~= 0 then
-            xPlayer.addMoney(money, 'NPC KILL')
+            if money > 0 then
+                xPlayer.addMoney(money, 'NPC KILL')
+            else
+                xPlayer.removeMoney(money * -1, 'NPC KILL')
+            end
 
             if showNotification then
                 local msgKey = 'notification_after_kill_' .. npcKilledData.victimPedType
@@ -48,4 +52,8 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
             end
         end
     end
+end)
+
+AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
+	xPlayer.setMoney(0)
 end)
