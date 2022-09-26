@@ -1,18 +1,18 @@
 local BUILD = GetGameBuildNumber()
+local idxFatalDamage = 4
+if BUILD >= 2189 then
+    idxFatalDamage = 6
+else
+    if BUILD >= 2060 then
+        idxFatalDamage = 5
+    end
+end
 
 AddEventHandler('gameEventTriggered',function(name,args)
     if name == 'CEventNetworkEntityDamage' then
         local victimId = args[1]
         local attackerId = args[2]
-        local isFatalDamage = args[4]
-
-        if BUILD >= 2189 then
-            isFatalDamage = args[6]
-        else
-            if BUILD >= 2060 then
-                isFatalDamage = args[5]
-            end
-        end
+        local isFatalDamage = args[idxFatalDamage]
 
         if isFatalDamage == 1 then
             local pedId = PlayerPedId()
