@@ -28,7 +28,5 @@ AddEventHandler('gameEventTriggered',function(name,args)
                 TriggerServerEvent("esx_kill_npc:npcKilled", npcKilledData)
             end
         end
-    else
-        print('CLIENT game event ' .. name .. ' (' .. json.encode(args) .. ')')
     end
 end)
