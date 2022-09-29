@@ -1,0 +1,1 @@
+A FiveM modification to update player ammo on server even if it was gotten from NPCs
