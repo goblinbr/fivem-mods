@@ -39,6 +39,11 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
 				xPlayer.showNotification(_U('no_weapon_for_ammo'))
 				cb(false)
 			end
+		elseif weaponName == 'BODY_ARMOR' then
+			xPlayer.removeMoney(price)
+			SetPedArmour(GetPlayerPed(source), 100)
+
+			cb(true, false)
 		elseif xPlayer.hasWeapon(weaponName) then
 			if weaponCat == 'Throw' then
 				xPlayer.removeMoney(price)

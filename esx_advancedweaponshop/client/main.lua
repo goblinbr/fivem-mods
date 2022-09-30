@@ -236,76 +236,99 @@ function OpenShopMenu(wvalue, zone)
 	if wvalue == 'wea_misc' then
 		for i=1, #Config.Zones[zone].Misc, 1 do
 			local item = Config.Zones[zone].Misc[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_throw' then
 		for i=1, #Config.Zones[zone].Throw, 1 do
 			local item = Config.Zones[zone].Throw[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_melee' then
 		for i=1, #Config.Zones[zone].Melee, 1 do
 			local item = Config.Zones[zone].Melee[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_handgun' then
 		for i=1, #Config.Zones[zone].Handgun, 1 do
 			local item = Config.Zones[zone].Handgun[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_smg' then
 		for i=1, #Config.Zones[zone].SMG, 1 do
 			local item = Config.Zones[zone].SMG[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_shotgun' then
 		for i=1, #Config.Zones[zone].Shotgun, 1 do
 			local item = Config.Zones[zone].Shotgun[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_assault' then
 		for i=1, #Config.Zones[zone].Assault, 1 do
 			local item = Config.Zones[zone].Assault[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_lmg' then
 		for i=1, #Config.Zones[zone].LMG, 1 do
 			local item = Config.Zones[zone].LMG[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_sniper' then
 		for i=1, #Config.Zones[zone].Sniper, 1 do
 			local item = Config.Zones[zone].Sniper[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_heavy' then
 		for i=1, #Config.Zones[zone].Heavy, 1 do
 			local item = Config.Zones[zone].Heavy[i]
-			item.label = ESX.GetWeaponLabel(item.name)
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
 		end
 	elseif wvalue == 'wea_ammo' then
 		for i=1, #Config.Zones[zone].Ammo, 1 do
 			local item = Config.Zones[zone].Ammo[i]
+			if not item.label then
+				item.label = ESX.GetWeaponLabel(item.name)
+			end
 
 			table.insert(elements, {label = ('%sx %s - <span style="color: green;">%s</span>'):format(item.quantity, item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = true, quantity = item.quantity, hash = item.hash})
 		end
@@ -322,7 +345,7 @@ function OpenShopMenu(wvalue, zone)
 	}, function(data, menu)
 		ESX.TriggerServerCallback('esx_advancedweaponshop:buyWeapon', function(bought, ammo)
 			if bought then
-				if ammo then
+				if ammo or data.current.weaponName == 'BODY_ARMOR' then
 					DisplayBoughtAmmo(data.current.label, data.current.price)
 				else
 					DisplayBoughtScaleform(data.current.weaponName, data.current.price)

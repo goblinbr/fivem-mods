@@ -54,6 +54,7 @@ Config.Zones = {
 	LegalShop = {
 		Legal = true, -- DO NOT CHANGE
 		Misc = {
+			{cat = 'Misc', name = 'BODY_ARMOR', price = 100, label = 'Body armor'},
 			{cat = 'Misc', name = 'GADGET_PARACHUTE', price = 800},
 			{cat = 'Misc', name = 'WEAPON_FIREEXTINGUISHER', price = 100}
 		},
