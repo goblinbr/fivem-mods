@@ -15,8 +15,6 @@ AddEventHandler('esx:onPlayerSpawn', function(spawn, a, b, c, d, e)
     local pos = GetEntityCoords(playerPed)
     local vehicle = CreateVehicle(vehicleModel, pos.x + 1, pos.y, pos.z, GetEntityHeading(playerPed), true, false)
 
---    //SetPedIntoVehicle(playerPed, vehicle, -1)
-
     SetEntityAsNoLongerNeeded(vehicle)
     SetModelAsNoLongerNeeded(vehicleModel)
 
