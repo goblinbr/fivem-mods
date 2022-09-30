@@ -65,7 +65,7 @@ Config.Zones = {
 			{cat = 'Throw', name = 'WEAPON_SMOKEGRENADE', price = 250},
 			{cat = 'Throw', name = 'WEAPON_MOLOTOV', price = 300},
 			{cat = 'Throw', name = 'WEAPON_GRENADE', price = 1000},
-			{cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200, quantity = 100},
+			{cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200, quantity = 4500},
 			{cat = 'Throw', name = 'WEAPON_PIPEBOMB', price = 2000}
 		},
 		Melee = {
