@@ -31,7 +31,8 @@ Config.HasWeapons = {
 		Assault = true,
 		LMG = true,
 		Sniper = true,
-		Heavy = true
+		Heavy = true,
+		Ammo = true,
 	},
 
 	IllegalShop = {
@@ -44,7 +45,8 @@ Config.HasWeapons = {
 		Assault = true,
 		LMG = false,
 		Sniper = false,
-		Heavy = false
+		Heavy = false,
+		Ammo = false
 	}
 }
 
@@ -63,7 +65,7 @@ Config.Zones = {
 			{cat = 'Throw', name = 'WEAPON_SMOKEGRENADE', price = 250},
 			{cat = 'Throw', name = 'WEAPON_MOLOTOV', price = 300},
 			{cat = 'Throw', name = 'WEAPON_GRENADE', price = 1000},
-			{cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200},
+			{cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200, quantity = 100},
 			{cat = 'Throw', name = 'WEAPON_PIPEBOMB', price = 2000}
 		},
 		Melee = {
@@ -146,6 +148,18 @@ Config.Zones = {
 			{cat = 'Heavy', name = 'WEAPON_MINIGUN', price = 100000},
 			{cat = 'Heavy', name = 'WEAPON_RPG', price = 100000}
 		},
+		Ammo = {
+			{cat = 'Ammo', name = 'AMMO_PISTOL', price = 10, ammo = true, quantity = 10, hash = `AMMO_PISTOL`, label = _U('ammo_pistol')},
+			{cat = 'Ammo', name = 'AMMO_SHOTGUN', price = 20, ammo = true, quantity = 8, hash = `AMMO_SHOTGUN`, label = _U('ammo_shotgun')},
+			{cat = 'Ammo', name = 'AMMO_SMG', price = 50, ammo = true, quantity = 25, hash = `AMMO_SMG`, label = _U('ammo_smg')},
+			{cat = 'Ammo', name = 'AMMO_RIFLE', price = 100, ammo = true, quantity = 30, hash = `AMMO_RIFLE`, label = _U('ammo_rifle')},
+			{cat = 'Ammo', name = 'AMMO_MG', price = 250, ammo = true, quantity = 25, hash = `AMMO_MG`, label = _U('ammo_mg')},
+			{cat = 'Ammo', name = 'AMMO_SNIPER', price = 300, ammo = true, quantity = 5, hash = `AMMO_SNIPER`, label = _U('ammo_sniper')},
+			{cat = 'Ammo', name = 'AMMO_GRENADELAUNCHER', price = 250, ammo = true, quantity = 1, hash = `AMMO_GRENADELAUNCHER`, label = _U('ammo_grenadelauncher')},
+			{cat = 'Ammo', name = 'AMMO_HOMINGLAUNCHER', price = 350, ammo = true, quantity = 1, hash = `AMMO_HOMINGLAUNCHER`, label = _U('ammo_hominglauncher')},
+			{cat = 'Ammo', name = 'AMMO_MINIGUN', price = 500, ammo = true, quantity = 100, hash = `AMMO_MINIGUN`, label = _U('ammo_minigun')},
+			{cat = 'Ammo', name = 'AMMO_RPG', price = 300, ammo = true, quantity = 1, hash = `AMMO_RPG`, label = _U('ammo_rpg')},
+		},
 		Locations = {
 			vector3(-662.1, -935.3, 20.8),
 			vector3(810.2, -2157.3, 28.6),
@@ -207,6 +221,8 @@ Config.Zones = {
 			--{cat = 'Sniper', name = 'NAME_HERE', price = 1}
 		},
 		Heavy = {
+		},
+		Ammo = {
 		},
 		Locations = {
 		}

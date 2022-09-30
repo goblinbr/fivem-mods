@@ -15,6 +15,7 @@ server_scripts {
 	'@es_extended/locale.lua',
 	'locales/*.lua',
 	'config.lua',
+	'@es_extended/config.weapons.lua',
 	'server/main.lua'
 }
 

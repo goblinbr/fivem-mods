@@ -46,6 +46,10 @@ function OpenMainMenu(zone)
 		if Config.HasWeapons.LegalShop.Heavy then
 			table.insert(elements, {label = _U('wea_heavy'), value = 'wea_heavy'})
 		end
+
+		if Config.HasWeapons.LegalShop.Ammo then
+			table.insert(elements, {label = _U('wea_ammo'), value = 'wea_ammo'})
+		end
 	elseif zone == 'IllegalShop' then
 		if Config.HasWeapons.IllegalShop.Misc then
 			table.insert(elements, {label = _U('wea_misc'), value = 'wea_misc'})
@@ -215,6 +219,9 @@ function OpenMainMenu(zone)
 				menu.close()
 				OpenShopMenu(action, zone)
 			end
+		elseif action == 'wea_ammo' then
+			menu.close()
+			OpenShopMenu(action, zone)
 		end
 	end, function(data, menu)
 		menu.close()
@@ -296,6 +303,12 @@ function OpenShopMenu(wvalue, zone)
 
 			table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat})
 		end
+	elseif wvalue == 'wea_ammo' then
+		for i=1, #Config.Zones[zone].Ammo, 1 do
+			local item = Config.Zones[zone].Ammo[i]
+
+			table.insert(elements, {label = ('%sx %s - <span style="color: green;">%s</span>'):format(item.quantity, item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = true, quantity = item.quantity, hash = item.hash})
+		end
 	end
 	Wait(500)
 
@@ -307,13 +320,17 @@ function OpenShopMenu(wvalue, zone)
 		align = GetConvar('esx_MenuAlign', 'top-left'),
 		elements = elements
 	}, function(data, menu)
-		ESX.TriggerServerCallback('esx_advancedweaponshop:buyWeapon', function(bought)
+		ESX.TriggerServerCallback('esx_advancedweaponshop:buyWeapon', function(bought, ammo)
 			if bought then
-				DisplayBoughtScaleform(data.current.weaponName, data.current.price)
+				if ammo then
+					DisplayBoughtAmmo(data.current.label, data.current.price)
+				else
+					DisplayBoughtScaleform(data.current.weaponName, data.current.price)
+				end
 			else
 				PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
 			end
-		end, data.current.weaponCat, data.current.weaponName, zone)
+		end, data.current.weaponCat, data.current.weaponName, zone, data.current.quantity, data.current.ammo, data.current.hash)
 	end, function(data, menu)
 		PlaySoundFrontend(-1, 'BACK', 'HUD_AMMO_SHOP_SOUNDSET', false)
 		IsInShopMenu = false
@@ -349,6 +366,11 @@ function DisplayBoughtScaleform(weaponName, price)
 			DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
 		end
 	end)
+end
+
+function DisplayBoughtAmmo(label, price)
+	PlaySoundFrontend(-1, 'WEAPON_PURCHASE', 'HUD_AMMO_SHOP_SOUNDSET', false)
+	ESX.ShowNotification(_U('ammo_bought', label))
 end
 
 -- Entered Marker
