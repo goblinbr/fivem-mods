@@ -1,6 +1,4 @@
 AddEventHandler('esx:onPlayerSpawn', function(spawn, a, b, c, d, e)
-    print('spawn', spawn, a, b, c, d, e)
-
     local vehicleModel = Config.vehicleModel;
 
     if not IsModelInCdimage(vehicleModel) or not IsModelAVehicle(vehicleModel) then
