@@ -14,3 +14,13 @@ AddEventHandler('esx_update_ammo:updateWeaponAmmo', function(weaponName, current
         end
     end
 end)
+
+
+RegisterNetEvent('esx_update_ammo:removeWeapon')
+AddEventHandler('esx_update_ammo:removeWeapon', function(weaponName)
+    local xPlayer = ESX.GetPlayerFromId(source)
+
+    if xPlayer then
+        xPlayer.removeWeapon(weaponName)
+    end
+end)

@@ -1,3 +1,10 @@
+local waitingLoadoutAdd = false
+AddEventHandler('esx:onPlayerSpawn', function(spawn)
+	waitingLoadoutAdd = true
+    Wait(3000)
+	waitingLoadoutAdd = false
+end)
+
 function StartServerAmmoSyncLoops()
     CreateThread(function()
         while not ESX.PlayerLoaded or not ESX.PlayerData.ped do
@@ -25,18 +32,21 @@ function StartServerAmmoSyncLoops()
 
         while ESX.PlayerLoaded do
             playerPed = ESX.PlayerData.ped
-            for k, weaponConfig in ipairs(Config.Weapons) do
-                if weaponConfig.ammo then
-                    local weapon = weapons[weaponConfig.name]
-                    local weaponHash = joaat(weaponConfig.name)
-                    if HasPedGotWeapon(playerPed, weaponHash, false) then
-                        local currentAmmo = GetAmmoInPedWeapon(playerPed, weaponHash)
-                        if weapon.ammo ~= currentAmmo then
-                            weapon.ammo = currentAmmo
-                            TriggerServerEvent('esx_update_ammo:updateWeaponAmmo', weaponConfig.name, currentAmmo)
+            if playerPed then
+                for k, weaponConfig in ipairs(Config.Weapons) do
+                    if weaponConfig.ammo and not waitingLoadoutAdd then
+                        local weapon = weapons[weaponConfig.name]
+                        local weaponHash = joaat(weaponConfig.name)
+                        if HasPedGotWeapon(playerPed, weaponHash, false) then
+                            local currentAmmo = GetAmmoInPedWeapon(playerPed, weaponHash)
+                            if weapon.ammo ~= currentAmmo then
+                                weapon.ammo = currentAmmo
+                                TriggerServerEvent('esx_update_ammo:updateWeaponAmmo', weaponConfig.name, currentAmmo)
+                            end
+                        elseif weapon.ammo > 0 then
+                            weapon.ammo = 0
+                            TriggerServerEvent('esx_update_ammo:removeWeapon', weaponConfig.name)
                         end
-                    else
-                        weapon.ammo = 0
                     end
                 end
             end
