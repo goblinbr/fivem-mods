@@ -74,8 +74,11 @@ Citizen.CreateThread(function()
         local playerId = PlayerId()
         local pedId = PlayerPedId();
 
-        local maxHealth = GetEntityMaxHealth(pedId);
-        local health = GetEntityHealth(pedId);
+        local maxHealth = GetEntityMaxHealth(pedId) - 100;
+        local health = GetEntityHealth(pedId) - 100;
+        if health < 0 then
+            health = 0
+        end
         local maxArmor = 100;
         local armor = GetPedArmour(pedId);
         local maxStamina = GetPlayerMaxStamina(playerId);
