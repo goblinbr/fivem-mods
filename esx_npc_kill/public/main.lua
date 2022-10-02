@@ -1,4 +1,4 @@
-local xpToLevelUpBylevel = 2000
+local xpToLevelUpBylevel = 1000
 
 function GetRequiredXpToLevelUp(level)
 	return xpToLevelUpBylevel * level

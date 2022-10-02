@@ -46,7 +46,8 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-    local hunger, thirst, xp, level, xpPerc
+    local hunger, thirst, xp, xpPerc
+    local level = 0
 
     while true do
         Wait(500)

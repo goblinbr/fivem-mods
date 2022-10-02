@@ -7,7 +7,7 @@ Config.xpOnKill = 10
 Config.showNotificationOnKill = true
 Config.staminaRegenByLevel = 0.0052
 Config.healthBylevel = 5
-Config.xpLostOnDeathBylevel = 500
+Config.xpLostOnDeathBylevel = 250
 
 Config.configByPedType = {}
 
