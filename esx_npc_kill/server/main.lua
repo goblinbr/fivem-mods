@@ -30,11 +30,13 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
         victimIdsKilled[victimIdIndex] = npcKilledData.victimId
 
         local money = Config.moneyOnKill
+        local xpOnKill = Config.xpOnKill
         local showNotification = Config.showNotificationOnKill
         local configPedType = Config.configByPedType[npcKilledData.victimPedType]
         if configPedType then
             money = configPedType.moneyOnKill
             showNotification = configPedType.showNotificationOnKill
+            xpOnKill = configPedType.xpOnKill
         end
         if money ~= 0 then
             if money > 0 then
@@ -51,9 +53,26 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
                 xPlayer.showNotification(_U(msgKey, ESX.Math.GroupDigits(money)))
             end
         end
+        if xpOnKill > 0 then
+            TriggerClientEvent('esx_status:add', source, 'xp', xpOnKill)
+        end
     end
 end)
 
+RegisterServerEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
 	xPlayer.setMoney(0)
+end)
+
+RegisterServerEvent('esx_kill_npc:saveStatus')
+AddEventHandler('esx_kill_npc:saveStatus', function()
+    if source == nil then
+        return
+    end
+
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local status = ESX.Players[xPlayer.source]
+
+	MySQL.update('UPDATE users SET status = ? WHERE identifier = ?', { json.encode(status), xPlayer.identifier })
+	ESX.Players[xPlayer.source] = nil
 end)

@@ -46,6 +46,8 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+    local hunger, thirst, xp, level, xpPerc
+
     while true do
         Wait(500)
 
@@ -61,6 +63,10 @@ Citizen.CreateThread(function()
                      function(status) hunger = status.val / 10000 end)
         TriggerEvent('esx_status:getStatus', 'thirst',
                      function(status) thirst = status.val / 10000 end)
+        TriggerEvent('esx_status:getStatus', 'xp',
+                     function(status) xp = status.val end)
+        TriggerEvent('esx_status:getStatus', 'level',
+                     function(status) level = status.val end)
         if Config.ShowStress == true then
             TriggerEvent('esx_status:getStatus', 'stress',
                          function(status) stress = status.val / 10000 end)
@@ -83,6 +89,11 @@ Citizen.CreateThread(function()
         local armor = GetPedArmour(pedId);
         local maxStamina = GetPlayerMaxStamina(playerId);
         local stamina = GetPlayerStamina(playerId);
+        local xpPerc = 0;
+        if level > 0 then
+            local xpToLevelUp = GetRequiredXpToLevelUp(level)
+            xpPerc = (xp / xpToLevelUp) * 100
+        end
 
         SendNUIMessage({
             action = "update_hud",
@@ -99,7 +110,10 @@ Citizen.CreateThread(function()
             maxStamina = maxStamina,
             healthPoints = health,
             armorPoints = armor,
-            staminaPoints = stamina
+            staminaPoints = stamina,
+            xpPerc = xpPerc,
+            xp = xp,
+            level = level
         })
         if IsPauseMenuActive() then
             SendNUIMessage({showUi = false})

@@ -62,6 +62,15 @@ $(document).ready(function () {
     easing: "easeInOut",
   });
 
+  XpIndicator = new ProgressBar.Circle("#XpIndicator", {
+    color: "rgb(0, 230, 25)",
+    trailColor: "rgb(0, 80, 10)",
+    strokeWidth: 15,
+    trailWidth: 15,
+    duration: 250,
+    easing: "easeInOut",
+  });
+
   FuelIndicator = new ProgressBar.Circle("#FuelCircle", {
     color: "rgba(222, 222, 222, 1)",
     trailColor: "rgba(184, 184, 184, 0.082)",
@@ -93,14 +102,17 @@ window.addEventListener("message", function (event) {
     ThirstIndicator.animate(data.thirst / 100);
     StressIndicator.animate(data.stress / 100);
     OxygenIndicator.animate(data.oxygen / 100);
+    XpIndicator.animate(data.xpPerc / 100);
 
-    $('#HealthPoints').text(Math.round(data.healthPoints));
-    $('#ArmorPoints').text(Math.round(data.armorPoints));
-    $('#StaminaPoints').text(Math.round(data.staminaPoints));
-    $('#HungerPoints').text(Math.round(data.hunger));
-    $('#ThirstPoints').text(Math.round(data.thirst));
-    $('#StressPoints').text(Math.round(data.stress));
-    $('#OxygenPoints').text(Math.round(data.oxygen));
+    $('#HealthPoints').text(Math.round(data.healthPoints) || 0);
+    $('#ArmorPoints').text(Math.round(data.armorPoints) || 0);
+    $('#StaminaPoints').text(Math.round(data.staminaPoints) || 0);
+    $('#HungerPoints').text(Math.round(data.hunger) || 0);
+    $('#ThirstPoints').text(Math.round(data.thirst) || 0);
+    $('#StressPoints').text(Math.round(data.stress) || 0);
+    $('#OxygenPoints').text(Math.round(data.oxygen) || 0);
+    $('#XpPoints').text(Math.round(data.xp) || 0);
+    $('#LevelPoints').text(Math.round(data.level) || 0);
   }
 
   // Get current voice level and animate path

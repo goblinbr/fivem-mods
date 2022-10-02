@@ -12,6 +12,7 @@ files {
 }
 
 client_scripts {
+    '@esx_npc_kill/public/main.lua',
     'config.lua',
     'client.lua'
 }

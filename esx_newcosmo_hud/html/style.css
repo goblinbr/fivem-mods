@@ -28,7 +28,8 @@ body {
 .fa-heart,
 .fa-shield-alt,
 .fa-hamburger,
-.fa-skull {
+.fa-skull,
+.fa-medal {
   color: white;
   position: absolute;
   font-size: 1.6vh;
@@ -156,6 +157,18 @@ body {
   bottom: 0.0vh;
   width: 100%;
   font-size: 1.5vh;
+  text-align: center;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+#LevelText {
+  color: white;
+  position: absolute;
+  margin: 0.3vh;
+  z-index: 1000;
+  bottom: 1.8vh;
+  width: 100%;
+  font-size: 1.8vh;
   text-align: center;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }

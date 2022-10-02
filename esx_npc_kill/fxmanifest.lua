@@ -10,6 +10,7 @@ version '0.0.1'
 shared_script '@es_extended/imports.lua'
 
 server_scripts {
+    '@oxmysql/lib/MySQL.lua',
     '@es_extended/locale.lua',
     'ped_types.lua',
     'locales/*.lua',
@@ -22,6 +23,7 @@ client_scripts {
     'ped_types.lua',
     'locales/*.lua',
     'config.lua',
+    'public/main.lua',
     'client/main.lua'
 }
 

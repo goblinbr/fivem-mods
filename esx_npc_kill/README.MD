@@ -1,1 +1,1 @@
-A FiveM modification to give money to player after killing a NPC
+A FiveM modification to give money and xp to player after killing a NPC

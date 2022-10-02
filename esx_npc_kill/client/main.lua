@@ -30,3 +30,67 @@ AddEventHandler('gameEventTriggered',function(name,args)
         end
     end
 end)
+
+local level = 1
+local xp = 0
+
+AddEventHandler('esx:onPlayerDeath', function()
+    local xpLost = Config.xpLostOnDeathBylevel * level
+    if xpLost > xp then
+        xpLost = xp
+    end
+    if xpLost > 0 then
+        TriggerEvent('esx_status:remove', 'xp', xpLost)
+        ESX.ShowNotification(_U('xp_lost_on_death', xpLost))
+    end
+end)
+
+AddEventHandler('esx_status:loaded', function(status)
+	TriggerEvent('esx_status:registerStatus', 'xp', 0, '#7F8EFF', function(status)
+		return true
+	end, function(status)
+        xp = status.val
+
+        local requiredXp = GetRequiredXpToLevelUp(level)
+        if status.val >= GetRequiredXpToLevelUp(level) then
+            TriggerEvent('esx_status:remove', 'xp', requiredXp)
+            TriggerEvent('esx_status:add', 'level', 1)
+            TriggerServerEvent("esx_kill_npc:saveStatus")
+
+            PlaySoundFrontend(-1, 'WEAPON_PURCHASE', 'HUD_AMMO_SHOP_SOUNDSET', false)
+            ESX.ShowNotification(_U('level_up', level + 1))
+        end
+	end)
+
+    TriggerEvent('esx_status:registerStatus', 'level', 1, '#000', function(status)
+		return true
+	end, function(status)
+        if status.val > level then
+            level = status.val
+
+            local playerPedId = PlayerPedId()
+            local maxHealth = 200 + Config.healthBylevel * (level - 1)
+            SetPedMaxHealth(playerPedId, maxHealth)
+            SetEntityHealth(playerPedId, maxHealth)
+        end
+	end)
+
+end)
+
+CreateThread(function()
+    while true do
+        Wait(50)
+
+        local playerId = PlayerId()
+        if playerId then
+            local stamina = GetPlayerStamina(playerId)
+            if stamina < 100.0 then
+                stamina = stamina + Config.staminaRegenByLevel * (level - 1)
+                if stamina > 100.0  then
+                    stamina = 100.0
+                end
+                SetPlayerStamina(playerId, stamina)
+            end
+        end
+    end
+end)

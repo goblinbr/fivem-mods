@@ -7,4 +7,6 @@ Locales['en'] = {
   ['notification_after_kill_' .. PED_TYPES.SWAT] = '%s money earned for SWAT kill',
   ['notification_after_kill_' .. PED_TYPES.ARMY] = '%s money earned for ARMY kill',
   ['notification_after_kill_' .. PED_TYPES.ANIMAL] = '%s money lost for ANIMAL kill',
+  ['xp_lost_on_death'] = '%s XP lost on death',
+  ['level_up'] = 'Level UP: %s. More health and stamina regeneration.',
 }
