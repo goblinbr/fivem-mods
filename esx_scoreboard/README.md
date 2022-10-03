@@ -1,0 +1,1 @@
+A FiveM modification to show a scoreboard

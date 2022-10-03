@@ -43,6 +43,7 @@ AddEventHandler('esx:onPlayerDeath', function()
         TriggerEvent('esx_status:remove', 'xp', xpLost)
         ESX.ShowNotification(_U('xp_lost_on_death', xpLost))
     end
+    TriggerEvent('esx_status:add', 'deaths', 1)
 end)
 
 AddEventHandler('esx_status:loaded', function(status)
@@ -73,6 +74,16 @@ AddEventHandler('esx_status:loaded', function(status)
             SetPedMaxHealth(playerPedId, maxHealth)
             SetEntityHealth(playerPedId, maxHealth)
         end
+	end)
+
+    TriggerEvent('esx_status:registerStatus', 'kills', 0, '#000', function(status)
+		return true
+	end, function(status)
+	end)
+
+    TriggerEvent('esx_status:registerStatus', 'deaths', 0, '#000', function(status)
+		return true
+	end, function(status)
 	end)
 
 end)

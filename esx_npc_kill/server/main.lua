@@ -56,6 +56,7 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
         if xpOnKill > 0 then
             TriggerClientEvent('esx_status:add', source, 'xp', xpOnKill)
         end
+        TriggerClientEvent('esx_status:add', source, 'kills', 1)
     end
 end)
 
