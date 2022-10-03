@@ -4,6 +4,7 @@ local openScoreboard = function()
     local playerStatus = {}
     TriggerEvent('esx_status:getStatus', 'kills', function(status) table.insert(playerStatus, status) end)
     TriggerEvent('esx_status:getStatus', 'deaths', function(status) table.insert(playerStatus, status) end)
+    TriggerEvent('esx_status:getStatus', 'level', function(status) table.insert(playerStatus, status) end)
 
     ESX.TriggerServerCallback('esx_scoreboard:getPlayersStatus', function(players)
         SendNUIMessage({

@@ -47,6 +47,19 @@ AddEventHandler('esx:onPlayerDeath', function()
 end)
 
 AddEventHandler('esx_status:loaded', function(status)
+    TriggerEvent('esx_status:registerStatus', 'level', 1, '#000', function(status)
+		return true
+	end, function(status)
+        if status.val > level then
+            level = status.val
+
+            local playerPedId = PlayerPedId()
+            local maxHealth = 200 + Config.healthBylevel * (level - 1)
+            SetPedMaxHealth(playerPedId, maxHealth)
+            SetEntityHealth(playerPedId, maxHealth)
+        end
+	end)
+
 	TriggerEvent('esx_status:registerStatus', 'xp', 0, '#7F8EFF', function(status)
 		return true
 	end, function(status)
@@ -60,19 +73,6 @@ AddEventHandler('esx_status:loaded', function(status)
 
             PlaySoundFrontend(-1, 'WEAPON_PURCHASE', 'HUD_AMMO_SHOP_SOUNDSET', false)
             ESX.ShowNotification(_U('level_up', level + 1))
-        end
-	end)
-
-    TriggerEvent('esx_status:registerStatus', 'level', 1, '#000', function(status)
-		return true
-	end, function(status)
-        if status.val > level then
-            level = status.val
-
-            local playerPedId = PlayerPedId()
-            local maxHealth = 200 + Config.healthBylevel * (level - 1)
-            SetPedMaxHealth(playerPedId, maxHealth)
-            SetEntityHealth(playerPedId, maxHealth)
         end
 	end)
 
