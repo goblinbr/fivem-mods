@@ -26,6 +26,8 @@ Locales['en'] = {
 	['wea_sniper'] = 'Sniper Rifles',
 	['wea_heavy'] = 'Heavy/Explosives',
 	['wea_ammo'] = 'Ammo',
+  ['wea_upgrades'] = 'Upgrades',
+  ['dont_have_any_upgrade'] = 'You do not have any available upgrade for your weapons',
 
 
   -- Weapons

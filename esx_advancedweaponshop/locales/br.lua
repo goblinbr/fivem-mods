@@ -26,6 +26,8 @@ Locales['br'] = {
 	['wea_sniper'] = 'Rifles de precisão',
 	['wea_heavy'] = 'Pesadas/Explosivas',
 	['wea_ammo'] = 'Munição',
+  ['wea_upgrades'] = 'Upgrades',
+  ['dont_have_any_upgrade'] = 'Você não tem nenhum upgrade disponível para suas armas',
 
   -- Weapons
   ['weapon_knife'] = 'faca',
