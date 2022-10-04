@@ -1,5 +1,5 @@
 Config = {}
-Config.Locale = 'en' -- Set Locale file to use.
+Config.Locale = "en" -- Set Locale file to use.
 
 Config.DrawDistance = 10 -- Marker Draw Distance.
 

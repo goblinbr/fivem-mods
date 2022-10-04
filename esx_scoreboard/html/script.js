@@ -7,6 +7,12 @@ $(window).ready(function () {
 		const jqContainer = $('#container');
 		let data = event.data;
 		if (data.showMenu) {
+			if (data.translate) {
+				for (const [key, value] of Object.entries(data.translate)) {
+					$('#' + key).text(value);
+				}
+			}
+
 			jqContainer.show();
 
 			const jqPlayers = $('#players');

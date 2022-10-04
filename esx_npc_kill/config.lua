@@ -1,6 +1,6 @@
 Config = {}
 
-Config.Locale = 'en'
+Config.Locale = "en"
 
 Config.moneyOnKill = 10
 Config.xpOnKill = 10

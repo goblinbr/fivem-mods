@@ -9,7 +9,8 @@ local openScoreboard = function()
     ESX.TriggerServerCallback('esx_scoreboard:getPlayersStatus', function(players)
         SendNUIMessage({
             showMenu = true,
-            players = players
+            players = players,
+            translate = Locales[Config.Locale]
         })
         menuIsShowed = true
         SetNuiFocus(true,true)
