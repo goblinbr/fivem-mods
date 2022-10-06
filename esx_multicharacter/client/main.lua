@@ -267,9 +267,11 @@ if ESX.GetConfig().Multichar then
 				local playerPed = PlayerPedId()
 				SetPedAoBlobRendering(playerPed, true)
 				ResetEntityAlpha(playerPed)
-				TriggerEvent('esx_skin:openSaveableMenu', function()
-					finished = true end, function() finished = true
-				end)
+				TriggerEvent('esx_skin:openSaveableRestrictedMenu',
+					function() finished = true end,
+					function() finished = true end,
+					Config.restrictNewCharTo
+				)
 			end)
 			repeat Wait(200) until finished
 		end
