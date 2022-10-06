@@ -1,3 +1,5 @@
+local ENTITY_TYPE_PED = 1
+
 local BUILD = GetGameBuildNumber()
 local idxFatalDamage = 4
 if BUILD >= 2189 then
@@ -14,6 +16,12 @@ AddEventHandler('gameEventTriggered',function(name,args)
         local attackerId = args[2]
         local isFatalDamage = args[idxFatalDamage]
 
+        local victimEntityType = GetEntityType(victimId)
+        local victimVehicleModel
+        if victimEntityType ~= ENTITY_TYPE_PED then
+            victimVehicleModel = GetEntityModel(victimId)
+        end
+
         if isFatalDamage == 1 then
             local pedId = PlayerPedId()
             local pedVehicleId = GetVehiclePedIsIn(pedId)
@@ -21,6 +29,8 @@ AddEventHandler('gameEventTriggered',function(name,args)
                 local npcKilledData = {
                     victimId = victimId,
                     victimPedType = GetPedType(victimId),
+                    victimEntityType = victimEntityType,
+                    victimVehicleModel = victimVehicleModel,
                     attackerId = attackerId,
                     pedId = pedId,
                     pedVehicleId = pedVehicleId
@@ -48,8 +58,8 @@ end)
 
 AddEventHandler('esx_status:loaded', function(status)
     TriggerEvent('esx_status:registerStatus', 'level', 1, '#000', function(status)
-		return true
-	end, function(status)
+        return true
+    end, function(status)
         if status.val > level then
             level = status.val
 
@@ -58,11 +68,11 @@ AddEventHandler('esx_status:loaded', function(status)
             SetPedMaxHealth(playerPedId, maxHealth)
             SetEntityHealth(playerPedId, maxHealth)
         end
-	end)
+    end)
 
-	TriggerEvent('esx_status:registerStatus', 'xp', 0, '#7F8EFF', function(status)
-		return true
-	end, function(status)
+    TriggerEvent('esx_status:registerStatus', 'xp', 0, '#7F8EFF', function(status)
+        return true
+    end, function(status)
         xp = status.val
 
         local requiredXp = GetRequiredXpToLevelUp(level)
@@ -74,17 +84,17 @@ AddEventHandler('esx_status:loaded', function(status)
             PlaySoundFrontend(-1, 'WEAPON_PURCHASE', 'HUD_AMMO_SHOP_SOUNDSET', false)
             ESX.ShowNotification(_U('level_up', level + 1))
         end
-	end)
+    end)
 
     TriggerEvent('esx_status:registerStatus', 'kills', 0, '#000', function(status)
-		return true
-	end, function(status)
-	end)
+        return true
+    end, function(status)
+    end)
 
     TriggerEvent('esx_status:registerStatus', 'deaths', 0, '#000', function(status)
-		return true
-	end, function(status)
-	end)
+        return true
+    end, function(status)
+    end)
 
 end)
 

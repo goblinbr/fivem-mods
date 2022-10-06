@@ -32,11 +32,23 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
         local money = Config.moneyOnKill
         local xpOnKill = Config.xpOnKill
         local showNotification = Config.showNotificationOnKill
-        local configPedType = Config.configByPedType[npcKilledData.victimPedType]
-        if configPedType then
-            money = configPedType.moneyOnKill
-            showNotification = configPedType.showNotificationOnKill
-            xpOnKill = configPedType.xpOnKill
+        if npcKilledData.victimVehicleModel then
+            money = Config.moneyOnKillVehicle
+            xpOnKill = Config.xpOnKillVehicle
+
+            local configVehicleModel = Config.configByVehicleModel[npcKilledData.victimVehicleModel]
+            if configVehicleModel then
+                money = configVehicleModel.moneyOnKill
+                showNotification = configVehicleModel.showNotificationOnKill
+                xpOnKill = configVehicleModel.xpOnKill
+            end
+        else
+            local configPedType = Config.configByPedType[npcKilledData.victimPedType]
+            if configPedType then
+                money = configPedType.moneyOnKill
+                showNotification = configPedType.showNotificationOnKill
+                xpOnKill = configPedType.xpOnKill
+            end
         end
         if money ~= 0 then
             if money > 0 then
@@ -47,6 +59,12 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
 
             if showNotification then
                 local msgKey = 'notification_after_kill_' .. npcKilledData.victimPedType
+                if npcKilledData.victimVehicleModel then
+                    msgKey = 'notification_after_kill_vehicle_' .. npcKilledData.victimVehicleModel
+                    if Locales[Config.Locale][msgKey] == nil then
+                        msgKey = 'notification_after_kill_vehicle'
+                    end
+                end
                 if Locales[Config.Locale][msgKey] == nil then
                     msgKey = 'notification_after_kill'
                 end
@@ -62,7 +80,7 @@ end)
 
 RegisterServerEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
-	xPlayer.setMoney(0)
+    xPlayer.setMoney(0)
 end)
 
 RegisterServerEvent('esx_kill_npc:saveStatus')
@@ -71,9 +89,9 @@ AddEventHandler('esx_kill_npc:saveStatus', function()
         return
     end
 
-	local xPlayer = ESX.GetPlayerFromId(source)
-	local status = ESX.Players[xPlayer.source]
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local status = ESX.Players[xPlayer.source]
 
-	MySQL.update('UPDATE users SET status = ? WHERE identifier = ?', { json.encode(status), xPlayer.identifier })
-	ESX.Players[xPlayer.source] = nil
+    MySQL.update('UPDATE users SET status = ? WHERE identifier = ?', { json.encode(status), xPlayer.identifier })
+    ESX.Players[xPlayer.source] = nil
 end)
