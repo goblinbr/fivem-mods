@@ -65,9 +65,9 @@ Config.Zones = {
             {cat = 'Throw', name = 'WEAPON_SNOWBALL', price = 25, quantity = 1},
             {cat = 'Throw', name = 'WEAPON_SMOKEGRENADE', price = 250, quantity = 1},
             {cat = 'Throw', name = 'WEAPON_MOLOTOV', price = 300, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_GRENADE', price = 1000, quantity = 1},
+            {cat = 'Throw', name = 'WEAPON_GRENADE', price = 800, quantity = 1},
             {cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200, quantity = 4500},
-            {cat = 'Throw', name = 'WEAPON_PIPEBOMB', price = 2000, quantity = 1}
+            {cat = 'Throw', name = 'WEAPON_PIPEBOMB', price = 1000, quantity = 1}
         },
         Melee = {
             {cat = 'Melee', name = 'WEAPON_DAGGER', price = 15},
@@ -220,53 +220,7 @@ Config.Zones = {
     },
 
     IllegalShop = {
-        Legal = false, -- DO NOT CHANGE
-        Misc = {
-            --{cat = 'Misc', name = 'NAME_HERE', price = 1}
-        },
-        Throw = {
-            {cat = 'Throw', name = 'WEAPON_BZGAS', price = 500},
-            {cat = 'Throw', name = 'WEAPON_MOLOTOV', price = 150},
-            {cat = 'Throw', name = 'WEAPON_SMOKEGRENADE', price = 500}
-        },
-        Melee = {
-            {cat = 'Melee', name = 'WEAPON_BAT', price = 25},
-            {cat = 'Melee', name = 'WEAPON_BOTTLE', price = 15},
-            {cat = 'Melee', name = 'WEAPON_CROWBAR', price = 20},
-            {cat = 'Melee', name = 'WEAPON_KNIFE', price = 35},
-            {cat = 'Melee', name = 'WEAPON_KNUCKLE', price = 30},
-            {cat = 'Melee', name = 'WEAPON_MACHETE', price = 25},
-            {cat = 'Melee', name = 'WEAPON_SWITCHBLADE', price = 30}
-        },
-        Handgun = {
-            {cat = 'Handgun', name = 'WEAPON_PISTOL', price = 700},
-            {cat = 'Handgun', name = 'WEAPON_SNSPISTOL', price = 300},
-            {cat = 'Handgun', name = 'WEAPON_VINTAGEPISTOL', price = 600}
-        },
-        SMG = {
-            {cat = 'SMG', name = 'WEAPON_MICROSMG', price = 1800},
-            {cat = 'SMG', name = 'WEAPON_MINISMG', price = 1600},
-            {cat = 'SMG', name = 'WEAPON_SMG', price = 3200}
-        },
-        Shotgun = {
-            {cat = 'Shotgun', name = 'WEAPON_DBSHOTGUN', price = 900},
-            {cat = 'Shotgun', name = 'WEAPON_PUMPSHOTGUN', price = 700},
-            {cat = 'Shotgun', name = 'WEAPON_SAWNOFFSHOTGUN', price = 1000}
-        },
-        Assault = {
-            {cat = 'Assault', name = 'WEAPON_ASSAULTRIFLE', price = 2400},
-            {cat = 'Assault', name = 'WEAPON_CARBINERIFLE', price = 4800}
-        },
-        LMG = {
-            --{cat = 'LMG', name = 'NAME_HERE', price = 1}
-        },
-        Sniper = {
-            --{cat = 'Sniper', name = 'NAME_HERE', price = 1}
-        },
-        Heavy = {
-        },
-        Ammo = {
-        },
+        Legal = false,
         Locations = {
         }
     }

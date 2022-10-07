@@ -9,7 +9,7 @@ Config.xpOnKillVehicle = 100
 Config.showNotificationOnKill = true
 Config.staminaRegenByLevel = 0.0052
 Config.healthBylevel = 5
-Config.xpLostOnDeathBylevel = 200
+Config.xpLostOnDeathBylevel = 150
 
 Config.configByPedType = {}
 
@@ -59,8 +59,8 @@ Config.configByPedType[PED_TYPES.ANIMAL] = {
 Config.configByVehicleModel = {}
 
 local policeVehicleConfig = {
-    moneyOnKill = 500,
-    xpOnKill = 500,
+    moneyOnKill = 1000,
+    xpOnKill = 1000,
     showNotificationOnKill = true
 }
 Config.configByVehicleModel[VEHICLE_MODELS.POLICE] = policeVehicleConfig
@@ -78,8 +78,8 @@ Config.configByVehicleModel[VEHICLE_MODELS.FBI] = policeVehicleConfig
 Config.configByVehicleModel[VEHICLE_MODELS.FBI2] = policeVehicleConfig
 
 local policeHelicopterConfig = {
-    moneyOnKill = 1500,
-    xpOnKill = 1500,
+    moneyOnKill = 2500,
+    xpOnKill = 2500,
     showNotificationOnKill = true
 }
 Config.configByVehicleModel[VEHICLE_MODELS.POLICE_HELICOPTER] = policeHelicopterConfig
