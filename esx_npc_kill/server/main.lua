@@ -21,35 +21,45 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
         end
     end
 
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if xPlayer then
-        victimIdIndex = victimIdIndex + 1
-        if victimIdIndex > MAX_VICTIM_IDS then
-            victimIdIndex = 1
-        end
-        victimIdsKilled[victimIdIndex] = npcKilledData.victimId
+    victimIdIndex = victimIdIndex + 1
+    if victimIdIndex > MAX_VICTIM_IDS then
+        victimIdIndex = 1
+    end
+    victimIdsKilled[victimIdIndex] = npcKilledData.victimId
 
-        local money = Config.moneyOnKill
-        local xpOnKill = Config.xpOnKill
-        local showNotification = Config.showNotificationOnKill
-        if npcKilledData.victimVehicleModel then
-            money = Config.moneyOnKillVehicle
-            xpOnKill = Config.xpOnKillVehicle
+    local money = Config.moneyOnKill
+    local xpOnKill = Config.xpOnKill
+    local showNotification = Config.showNotificationOnKill
+    if npcKilledData.victimVehicleModel then
+        money = Config.moneyOnKillVehicle
+        xpOnKill = Config.xpOnKillVehicle
 
-            local configVehicleModel = Config.configByVehicleModel[npcKilledData.victimVehicleModel]
-            if configVehicleModel then
-                money = configVehicleModel.moneyOnKill
-                showNotification = configVehicleModel.showNotificationOnKill
-                xpOnKill = configVehicleModel.xpOnKill
-            end
-        else
-            local configPedType = Config.configByPedType[npcKilledData.victimPedType]
-            if configPedType then
-                money = configPedType.moneyOnKill
-                showNotification = configPedType.showNotificationOnKill
-                xpOnKill = configPedType.xpOnKill
-            end
+        local configVehicleModel = Config.configByVehicleModel[npcKilledData.victimVehicleModel]
+        if configVehicleModel then
+            money = configVehicleModel.moneyOnKill
+            showNotification = configVehicleModel.showNotificationOnKill
+            xpOnKill = configVehicleModel.xpOnKill
         end
+    else
+        local configPedType = Config.configByPedType[npcKilledData.victimPedType]
+        if configPedType then
+            money = configPedType.moneyOnKill
+            showNotification = configPedType.showNotificationOnKill
+            xpOnKill = configPedType.xpOnKill
+        end
+    end
+
+    local entity = GetPlayerPed(source)
+    local coords = GetEntityCoords(entity)
+    local nearbyPlayers = ESX.OneSync.GetPlayersInArea(coords, Config.radiusPlayerToDivideEarnings)
+    local playersCount = #nearbyPlayers
+    if playersCount > 1 then
+        money = math.floor(money / playersCount)
+        xpOnKill = math.floor(xpOnKill / playersCount)
+    end
+
+    for _, v in pairs(nearbyPlayers) do
+        local xPlayer = ESX.GetPlayerFromId(v.id)
         if money ~= 0 then
             if money > 0 then
                 xPlayer.addMoney(money, 'NPC KILL')
@@ -68,13 +78,13 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
                 if Locales[Config.Locale][msgKey] == nil then
                     msgKey = 'notification_after_kill'
                 end
-                TriggerClientEvent('chatMessage', source, "", {0, 255, 0}, _U(msgKey, ESX.Math.GroupDigits(money), ESX.Math.GroupDigits(xpOnKill)))
+                TriggerClientEvent('chatMessage', v.id, "", {0, 255, 0}, _U(msgKey, ESX.Math.GroupDigits(money), ESX.Math.GroupDigits(xpOnKill)))
             end
         end
         if xpOnKill > 0 then
-            TriggerClientEvent('esx_status:add', source, 'xp', xpOnKill)
+            TriggerClientEvent('esx_status:add', v.id, 'xp', xpOnKill)
         end
-        TriggerClientEvent('esx_status:add', source, 'kills', 1)
+        TriggerClientEvent('esx_status:add', v.id, 'kills', 1)
     end
 end)
 
