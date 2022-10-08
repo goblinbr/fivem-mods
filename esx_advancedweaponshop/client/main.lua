@@ -270,7 +270,6 @@ function OpenShopMenu(wvalue, zone)
             local pedId = PlayerPedId()
             local _, maxAmmo = GetMaxAmmoByType(pedId, item.hash)
             local currentAmmo = GetPedAmmoByType(pedId, item.hash)
-            print(item.label, maxAmmo, currentAmmo)
 
             if currentAmmo < maxAmmo then
                 table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
