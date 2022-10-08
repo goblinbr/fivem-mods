@@ -51,7 +51,7 @@ AddEventHandler('esx:onPlayerDeath', function()
     end
     if xpLost > 0 then
         TriggerEvent('esx_status:remove', 'xp', xpLost)
-        ESX.ShowNotification(_U('xp_lost_on_death', xpLost))
+        TriggerEvent('chatMessage', "", {255, 0, 0}, _U('xp_lost_on_death', xpLost))
     end
     TriggerEvent('esx_status:add', 'deaths', 1)
 end)

@@ -68,7 +68,7 @@ AddEventHandler('esx_kill_npc:npcKilled', function(npcKilledData)
                 if Locales[Config.Locale][msgKey] == nil then
                     msgKey = 'notification_after_kill'
                 end
-                xPlayer.showNotification(_U(msgKey, ESX.Math.GroupDigits(money)))
+                TriggerClientEvent('chatMessage', source, "", {0, 255, 0}, _U(msgKey, ESX.Math.GroupDigits(money), ESX.Math.GroupDigits(xpOnKill)))
             end
         end
         if xpOnKill > 0 then
