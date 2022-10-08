@@ -55,19 +55,18 @@ Config.Zones = {
         Legal = true, -- DO NOT CHANGE
         Misc = {
             {cat = 'Misc', name = 'BODY_ARMOR', price = 100, label = 'Body armor'},
-            {cat = 'Misc', name = 'GADGET_PARACHUTE', price = 800},
-            {cat = 'Misc', name = 'WEAPON_FIREEXTINGUISHER', price = 100}
+            {cat = 'Misc', name = 'GADGET_PARACHUTE', price = 800}
         },
         Throw = {
-            {cat = 'Throw', name = 'WEAPON_BALL', price = 25, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_BZGAS', price = 250, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_FLARE', price = 100, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_SNOWBALL', price = 25, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_SMOKEGRENADE', price = 250, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_MOLOTOV', price = 300, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_GRENADE', price = 800, quantity = 1},
-            {cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200, quantity = 4500},
-            {cat = 'Throw', name = 'WEAPON_PIPEBOMB', price = 1000, quantity = 1}
+            {cat = 'Throw', name = 'WEAPON_FLARE', price = 100, quantity = 1, hash = `AMMO_FLARE`},
+            {cat = 'Throw', name = 'WEAPON_PETROLCAN', price = 200, quantity = 4500, hash = `AMMO_PETROLCAN`},
+            {cat = 'Throw', name = 'WEAPON_BZGAS', price = 250, quantity = 1, hash = `AMMO_BZGAS`},
+            {cat = 'Throw', name = 'WEAPON_SMOKEGRENADE', price = 250, quantity = 1, hash = `AMMO_SMOKEGRENADE`},
+            {cat = 'Throw', name = 'WEAPON_MOLOTOV', price = 300, quantity = 1, hash = `AMMO_MOLOTOV`},
+            {cat = 'Throw', name = 'WEAPON_PROXMINE', price = 500, quantity = 1, hash = `AMMO_PROXMINE`},
+            {cat = 'Throw', name = 'WEAPON_GRENADE', price = 800, quantity = 1, hash = `AMMO_GRENADE`},
+            {cat = 'Throw', name = 'WEAPON_PIPEBOMB', price = 800, quantity = 1, hash = `AMMO_PIPEBOMB`},
+            {cat = 'Throw', name = 'WEAPON_STICKYBOMB', price = 1000, quantity = 1, hash = `AMMO_STICKYBOMB`},
         },
         Melee = {
             {cat = 'Melee', name = 'WEAPON_DAGGER', price = 15},

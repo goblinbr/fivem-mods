@@ -247,7 +247,18 @@ function OpenShopMenu(wvalue, zone)
                 item.label = ESX.GetWeaponLabel(item.name)
             end
 
-            table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
+            local insert = true;
+            if item.name == 'BODY_ARMOR' then
+                local pedId = PlayerPedId()
+                local currentArmour = GetPedArmour(pedId)
+                local maxArmour = GetPlayerMaxArmour(PlayerId())
+                if currentArmour >= maxArmour then
+                    insert = false
+                end
+            end
+            if insert then
+                table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
+            end
         end
     elseif wvalue == 'wea_throw' then
         for i=1, #Config.Zones[zone].Throw, 1 do
@@ -256,7 +267,14 @@ function OpenShopMenu(wvalue, zone)
                 item.label = ESX.GetWeaponLabel(item.name)
             end
 
-            table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
+            local pedId = PlayerPedId()
+            local _, maxAmmo = GetMaxAmmoByType(pedId, item.hash)
+            local currentAmmo = GetPedAmmoByType(pedId, item.hash)
+            print(item.label, maxAmmo, currentAmmo)
+
+            if currentAmmo < maxAmmo then
+                table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
+            end
         end
     elseif wvalue == 'wea_melee' then
         for i=1, #Config.Zones[zone].Melee, 1 do
@@ -336,8 +354,12 @@ function OpenShopMenu(wvalue, zone)
             if not item.label then
                 item.label = ESX.GetWeaponLabel(item.name)
             end
-
-            table.insert(elements, {label = ('%sx %s - <span style="color: green;">%s</span>'):format(item.quantity, item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = true, quantity = item.quantity, hash = item.hash})
+            local pedId = PlayerPedId()
+            local _, maxAmmo = GetMaxAmmoByType(pedId, item.hash)
+            local currentAmmo = GetPedAmmoByType(pedId, item.hash)
+            if currentAmmo < maxAmmo then
+                table.insert(elements, {label = ('%sx %s - <span style="color: green;">%s</span>'):format(item.quantity, item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = true, quantity = item.quantity, hash = item.hash})
+            end
         end
     elseif wvalue == 'wea_upgrades' then
         waitForUpgrades = true
@@ -356,9 +378,9 @@ function OpenShopMenu(wvalue, zone)
             waitForUpgrades = false
         end)
     end
-    Wait(100)
+    Wait(50)
     while waitForUpgrades do
-        Wait(100)
+        Wait(50)
     end
     if not proceed then
         return
@@ -379,8 +401,9 @@ function OpenShopMenu(wvalue, zone)
                 else
                     DisplayBoughtScaleform(data.current.weaponName, data.current.price)
                 end
-                if data.current.componentName then
+                if ammo or data.current.componentName or wvalue == 'wea_throw' or wvalue == 'wea_misc' then
                     menu.close()
+                    Wait(100)
                     OpenShopMenu(wvalue, zone)
                 end
             else
