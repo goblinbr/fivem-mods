@@ -1,3 +1,4 @@
+local activeBlips = {}
 
 local function setupBlip(blip, playerName, isInVehicle)
     local config = Config.pedBlip
@@ -17,7 +18,14 @@ local function setupBlip(blip, playerName, isInVehicle)
     EndTextCommandSetBlipName(blip)
 end
 
-local activeBlips = {}
+AddEventHandler('esx:onPlayerDeath', function()
+    for playerId, activeBlip in pairs(activeBlips) do
+        if activeBlip then
+            RemoveBlip(activeBlip.blip)
+            activeBlips[playerId] = nil
+        end
+    end
+end)
 
 CreateThread(function()
     DisplayPlayerNameTagsOnBlips(true)
@@ -54,11 +62,16 @@ CreateThread(function()
                     end
 
                     local blip = activeBlip.blip
-                    if not blip then
+                    if not blip or activeBlip.pedId ~= pedId then
+                        if blip then
+                            RemoveBlip(activeBlip.blip)
+                        end
+
                         blip = AddBlipForEntity(pedId)
                         activeBlip.blip = blip
                         activeBlip.playerName = playerName
                         activeBlip.isInVehicle = false
+                        activeBlip.pedId = pedId
                         setupBlip(blip, playerName, false)
                     end
 
