@@ -237,7 +237,7 @@ end
 function OpenShopMenu(wvalue, zone)
     local elements = {}
     IsInShopMenu = true
-    local waitForUpgrades = false
+    local waitForServerResponse = false
     local proceed = true
 
     if wvalue == 'wea_misc' then
@@ -348,37 +348,67 @@ function OpenShopMenu(wvalue, zone)
             table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
         end
     elseif wvalue == 'wea_ammo' then
+        local pedId = PlayerPedId()
+        local ammoArray = {}
         for i=1, #Config.Zones[zone].Ammo, 1 do
             local item = Config.Zones[zone].Ammo[i]
             if not item.label then
                 item.label = ESX.GetWeaponLabel(item.name)
             end
-            local pedId = PlayerPedId()
             local _, maxAmmo = GetMaxAmmoByType(pedId, item.hash)
             local currentAmmo = GetPedAmmoByType(pedId, item.hash)
+            local ammoToComplete = maxAmmo - currentAmmo
             if currentAmmo < maxAmmo then
-                table.insert(elements, {label = ('%sx %s - <span style="color: green;">%s</span>'):format(item.quantity, item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = true, quantity = item.quantity, hash = item.hash})
+                table.insert(ammoArray, {item = item, currentAmmo = currentAmmo, maxAmmo = maxAmmo, ammoToComplete = ammoToComplete})
             end
         end
+
+        if #ammoArray > 0 then
+            waitForServerResponse = true
+            ESX.TriggerServerCallback('esx_advancedweaponshop:getAvailableAmmo', function(availableAmmoArray)
+                if #availableAmmoArray > 0 then
+                    local refill = {}
+                    local priceToRefil = 0
+                    for _, ammo in ipairs(availableAmmoArray) do
+                        local item = ammo.item
+                        table.insert(elements, {label = ('%sx %s - <span style="color: green;">%s</span>'):format(item.quantity, item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = true, quantity = item.quantity, hash = item.hash})
+
+                        priceToRefil = priceToRefil + (math.ceil(ammo.ammoToComplete / item.quantity) * item.price)
+                        table.insert(refill, ammo)
+                    end
+
+                    table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(_U('refill_amo_item'), _U('shop_menu_item', ESX.Math.GroupDigits(priceToRefil))), price = priceToRefil, weaponName = 'refill', weaponCat = 'Ammo', ammo = true, refill = refill})
+                else
+                    PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
+                    ESX.ShowNotification(_U('no_ammo_to_buy'))
+                    proceed = false
+                end
+                waitForServerResponse = false
+            end, ammoArray)
+        else
+            PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
+            ESX.ShowNotification(_U('no_ammo_to_buy'))
+            return;
+        end
     elseif wvalue == 'wea_upgrades' then
-        waitForUpgrades = true
+        waitForServerResponse = true
         ESX.TriggerServerCallback('esx_advancedweaponshop:getAvailableWeaponsUpgrades', function(weaponsUpgrades)
-            if #weaponsUpgrades <= 0 then
-                PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
-                ESX.ShowNotification(_U('dont_have_any_upgrade'))
-                proceed = false
-            else
+            if #weaponsUpgrades > 0 then
                 for _, weapon in ipairs(weaponsUpgrades) do
                     for _, component in ipairs(weapon.availableComponents) do
                         table.insert(elements, {label = ('%s - %s - <span style="color: green;">%s</span>'):format(weapon.label, component.label, _U('shop_menu_item', ESX.Math.GroupDigits(component.price))), price = component.price, weaponName = weapon.name, componentName = component.name, weaponCat = component.cat, ammo = false, quantity = 1, hash = component.hash})
                     end
                 end
+            else
+                PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
+                ESX.ShowNotification(_U('dont_have_any_upgrade'))
+                proceed = false
             end
-            waitForUpgrades = false
+            waitForServerResponse = false
         end)
     end
     Wait(50)
-    while waitForUpgrades do
+    while waitForServerResponse do
         Wait(50)
     end
     if not proceed then
@@ -401,14 +431,20 @@ function OpenShopMenu(wvalue, zone)
                     DisplayBoughtScaleform(data.current.weaponName, data.current.price)
                 end
                 if ammo or data.current.componentName or wvalue == 'wea_throw' or wvalue == 'wea_misc' then
-                    menu.close()
-                    Wait(100)
-                    OpenShopMenu(wvalue, zone)
+                    if ammo and data.current.refill then
+                        IsInShopMenu = false
+                        menu.close()
+                        OpenMainMenu(zone)
+                    else
+                        menu.close()
+                        Wait(100)
+                        OpenShopMenu(wvalue, zone)
+                    end
                 end
             else
                 PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
             end
-        end, data.current.weaponCat, data.current.weaponName, zone, data.current.quantity, data.current.ammo, data.current.hash, data.current.componentName)
+        end, zone, data.current)
     end, function(data, menu)
         PlaySoundFrontend(-1, 'BACK', 'HUD_AMMO_SHOP_SOUNDSET', false)
         IsInShopMenu = false

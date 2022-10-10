@@ -28,6 +28,8 @@ Locales['en'] = {
 	['wea_ammo'] = 'Ammo',
   ['wea_upgrades'] = 'Upgrades',
   ['dont_have_any_upgrade'] = 'You do not have any available upgrade for your weapons',
+  ['no_ammo_to_buy'] = 'You do not have any ammo to buy for your weapons',
+  ['refill_amo_item'] = 'Refill all ammo',
 
 
   -- Weapons

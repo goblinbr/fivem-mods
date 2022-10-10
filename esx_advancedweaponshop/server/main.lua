@@ -21,6 +21,24 @@ local function getPrice(weaponCat, weaponName, zone)
     end
 end
 
+ESX.RegisterServerCallback('esx_advancedweaponshop:getAvailableAmmo', function(source, cb, ammoArray)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local availableAmmoArray = {}
+    for _, ammo in ipairs(ammoArray) do
+        local playerHasWeaponWithSameAmmoType = false
+        for _, weaponConfig in ipairs(Config.Weapons) do
+            if xPlayer.hasWeapon(weaponConfig.name) and weaponConfig.ammo and weaponConfig.ammo.hash == ammo.item.hash then
+                playerHasWeaponWithSameAmmoType = true
+                break
+            end
+        end
+        if playerHasWeaponWithSameAmmoType then
+            table.insert(availableAmmoArray, ammo)
+        end
+    end
+    cb(availableAmmoArray)
+end)
+
 ESX.RegisterServerCallback('esx_advancedweaponshop:getAvailableWeaponsUpgrades', function(source, cb)
     local xPlayer = ESX.GetPlayerFromId(source)
     local weaponsUpgrades = {}
@@ -60,11 +78,15 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:getAvailableWeaponsUpgrades',
     cb(weaponsUpgrades)
 end)
 
-
 -- Buy Weapon
-ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, cb, weaponCat, weaponName, zone, quantity, ammo, hash, componentName)
+ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, cb, zone, current)
     local xPlayer = ESX.GetPlayerFromId(source)
-    local price = getPrice(weaponCat, componentName or weaponName, zone)
+    local price = 0
+    if current.ammo and current.refill then
+        price = current.price
+    else
+        price = getPrice(current.weaponCat, current.componentName or current.weaponName, zone)
+    end
 
     if price == 0 then
         print(('esx_advancedweaponshop: %s Attempted to buy a UNKNOWN Weapon!'):format(xPlayer.identifier))
@@ -84,36 +106,52 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
             end
         end
 
-        if ammo then
+        if current.ammo then
             local bought = false
-            for k, weaponConfig in ipairs(Config.Weapons) do
-                if weaponConfig.ammo and weaponConfig.ammo.hash == hash and xPlayer.hasWeapon(weaponConfig.name) then
-                    if not bought then
-                        xPlayer.removeMoney(price)
-                        bought = true
+            if current.refill then
+                for _, ammoRefill in ipairs(current.refill) do
+                    for _, weaponConfig in ipairs(Config.Weapons) do
+                        if weaponConfig.ammo and weaponConfig.ammo.hash == ammoRefill.item.hash and xPlayer.hasWeapon(weaponConfig.name) then
+                            if not bought then
+                                xPlayer.removeMoney(price)
+                                bought = true
+                            end
+                            xPlayer.addWeaponAmmo(weaponConfig.name, ammoRefill.ammoToComplete)
+                        end
                     end
-                    xPlayer.addWeaponAmmo(weaponConfig.name, quantity or 1)
+                end
+            else
+                for k, weaponConfig in ipairs(Config.Weapons) do
+                    if weaponConfig.ammo and weaponConfig.ammo.hash == current.hash and xPlayer.hasWeapon(weaponConfig.name) then
+                        if not bought then
+                            xPlayer.removeMoney(price)
+                            bought = true
+                        end
+                        xPlayer.addWeaponAmmo(weaponConfig.name, current.quantity or 1)
+                    end
                 end
             end
+
+
             if bought then
                 cb(true, true)
             else
                 xPlayer.showNotification(_U('no_weapon_for_ammo'))
                 cb(false)
             end
-        elseif componentName then
+        elseif current.componentName then
             xPlayer.removeMoney(price)
-            xPlayer.addWeaponComponent(weaponName, componentName)
+            xPlayer.addWeaponComponent(current.weaponName, current.componentName)
             cb(true, false)
-        elseif weaponName == 'BODY_ARMOR' then
+        elseif current.weaponName == 'BODY_ARMOR' then
             xPlayer.removeMoney(price)
             SetPedArmour(GetPlayerPed(source), GetPlayerMaxArmour(source))
 
             cb(true, false)
-        elseif xPlayer.hasWeapon(weaponName) then
-            if weaponCat == 'Throw' then
+        elseif xPlayer.hasWeapon(current.weaponName) then
+            if current.weaponCat == 'Throw' then
                 xPlayer.removeMoney(price)
-                xPlayer.addWeaponAmmo(weaponName, quantity or 1)
+                xPlayer.addWeaponAmmo(current.weaponName, current.quantity or 1)
 
                 cb(true, false)
             else
@@ -123,12 +161,12 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
         else
             if zone == 'LegalShop' then
                 xPlayer.removeMoney(price)
-                xPlayer.addWeapon(weaponName, quantity or 50)
+                xPlayer.addWeapon(current.weaponName, current.quantity or 50)
 
                 cb(true, false)
             else
                 xPlayer.removeAccountMoney('black_money', price)
-                xPlayer.addWeapon(weaponName, quantity or 50)
+                xPlayer.addWeapon(current.weaponName, current.quantity or 50)
 
                 cb(true, false)
             end
