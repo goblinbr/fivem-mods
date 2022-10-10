@@ -63,10 +63,13 @@ AddEventHandler('esx_status:loaded', function(status)
         if status.val > level then
             level = status.val
 
+            local playerId = PlayerId()
             local playerPedId = PlayerPedId()
             local maxHealth = 200 + Config.healthBylevel * (level - 1)
+            local maxArmour = 100 + Config.armourBylevel * (level - 1)
             SetPedMaxHealth(playerPedId, maxHealth)
             SetEntityHealth(playerPedId, maxHealth)
+            SetPlayerMaxArmour(playerId, maxArmour)
         end
     end)
 

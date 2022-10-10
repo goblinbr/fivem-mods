@@ -9,7 +9,8 @@ Config.xpOnKillVehicle = 100
 Config.showNotificationOnKill = true
 Config.staminaRegenByLevel = 0.0052
 Config.healthBylevel = 5
-Config.xpLostOnDeathBylevel = 150
+Config.armourBylevel = 5
+Config.xpLostOnDeathBylevel = 100
 Config.radiusPlayerToDivideEarnings = 20.0
 
 Config.configByPedType = {}

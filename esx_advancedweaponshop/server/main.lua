@@ -107,7 +107,7 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
             cb(true, false)
         elseif weaponName == 'BODY_ARMOR' then
             xPlayer.removeMoney(price)
-            SetPedArmour(GetPlayerPed(source), 100)
+            SetPedArmour(GetPlayerPed(source), GetPlayerMaxArmour(source))
 
             cb(true, false)
         elseif xPlayer.hasWeapon(weaponName) then

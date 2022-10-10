@@ -86,7 +86,7 @@ Citizen.CreateThread(function()
         if health < 0 then
             health = 0
         end
-        local maxArmor = 100;
+        local maxArmor = GetPlayerMaxArmour(playerId);
         local armor = GetPedArmour(pedId);
         local maxStamina = GetPlayerMaxStamina(playerId);
         local stamina = GetPlayerStamina(playerId);
@@ -99,7 +99,7 @@ Citizen.CreateThread(function()
         SendNUIMessage({
             action = "update_hud",
             hp = (health / maxHealth) * 100,
-            armor = armor,
+            armor = (armor / maxArmor) * 100,
             stamina = (stamina / maxStamina) * 100,
             hunger = hunger,
             thirst = thirst,

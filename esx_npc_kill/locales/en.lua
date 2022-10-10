@@ -32,5 +32,5 @@ Locales['en'] = {
   ['notification_after_kill_vehicle_' .. VEHICLE_MODELS.MILITARY_RHINO] = '%s money and %s xp earned for military car destroy',
   ['notification_after_kill_vehicle_' .. VEHICLE_MODELS.MILITARY_TRAILERSMALL2] = '%s money and %s xp earned for military car destroy',
   ['xp_lost_on_death'] = '%s XP lost on death',
-  ['level_up'] = 'Level UP: %s. More health and stamina regeneration.',
+  ['level_up'] = 'Level UP: %s. More health, armour and stamina regeneration.',
 }
