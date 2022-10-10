@@ -20,11 +20,13 @@ function StartServerAmmoSyncLoops()
                 if HasPedGotWeapon(playerPed, weaponHash, false) then
                     local currentAmmo = GetAmmoInPedWeapon(playerPed, weaponHash)
                     weapons[weaponConfig.name] = {
-                        ammo = currentAmmo
+                        ammo = currentAmmo,
+                        removed = false
                     }
                 else
                     weapons[weaponConfig.name] = {
-                        ammo = 0
+                        ammo = 0,
+                        removed = true
                     }
                 end
             end
@@ -41,10 +43,12 @@ function StartServerAmmoSyncLoops()
                             local currentAmmo = GetAmmoInPedWeapon(playerPed, weaponHash)
                             if weapon.ammo ~= currentAmmo then
                                 weapon.ammo = currentAmmo
+                                weapon.removed = false
                                 TriggerServerEvent('esx_update_ammo:updateWeaponAmmo', weaponConfig.name, currentAmmo)
                             end
-                        elseif weapon.ammo > 0 then
+                        elseif not weapon.removed then
                             weapon.ammo = 0
+                            weapon.removed = true
                             TriggerServerEvent('esx_update_ammo:removeWeapon', weaponConfig.name)
                         end
                     end
