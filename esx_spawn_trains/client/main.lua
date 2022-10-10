@@ -1,0 +1,7 @@
+CreateThread(function()
+    SwitchTrainTrack(0, true)
+    SwitchTrainTrack(3, true)
+    SetTrainTrackSpawnFrequency(0, Config.spawnFrequency)
+    SetTrainTrackSpawnFrequency(3, Config.spawnFrequency)
+    SetRandomTrains(true)
+end)
