@@ -92,14 +92,23 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
         print(('esx_advancedweaponshop: %s Attempted to buy a UNKNOWN Weapon!'):format(xPlayer.identifier))
         cb(false)
     else
+        local quantity = current.quantity or 1
+        if current.value then
+            quantity = quantity * current.value
+            price = math.floor(price * current.value)
+        end
+
+        local account
         if zone == 'LegalShop' then
-            if xPlayer.getMoney() < price then
+            account = 'money'
+            if xPlayer.getAccount(account).money < price then
                 xPlayer.showNotification(_U('not_enough'))
                 cb(false)
                 return
             end
         else
-            if xPlayer.getAccount('black_money').money < price then
+            account = 'black_money'
+            if xPlayer.getAccount(account).money < price then
                 xPlayer.showNotification(_U('not_enough_black'))
                 cb(false)
                 return
@@ -113,7 +122,7 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
                     for _, weaponConfig in ipairs(Config.Weapons) do
                         if weaponConfig.ammo and weaponConfig.ammo.hash == ammoRefill.item.hash and xPlayer.hasWeapon(weaponConfig.name) then
                             if not bought then
-                                xPlayer.removeMoney(price)
+                                xPlayer.removeAccountMoney(account, price)
                                 bought = true
                             end
                             xPlayer.addWeaponAmmo(weaponConfig.name, ammoRefill.ammoToComplete)
@@ -124,52 +133,46 @@ ESX.RegisterServerCallback('esx_advancedweaponshop:buyWeapon', function(source, 
                 for k, weaponConfig in ipairs(Config.Weapons) do
                     if weaponConfig.ammo and weaponConfig.ammo.hash == current.hash and xPlayer.hasWeapon(weaponConfig.name) then
                         if not bought then
-                            xPlayer.removeMoney(price)
+                            xPlayer.removeAccountMoney(account, price)
                             bought = true
                         end
-                        xPlayer.addWeaponAmmo(weaponConfig.name, current.quantity or 1)
+                        xPlayer.addWeaponAmmo(weaponConfig.name, quantity)
                     end
                 end
             end
 
 
             if bought then
-                cb(true, true)
+                cb(true, price)
             else
                 xPlayer.showNotification(_U('no_weapon_for_ammo'))
                 cb(false)
             end
         elseif current.componentName then
-            xPlayer.removeMoney(price)
+            xPlayer.removeAccountMoney(account, price)
             xPlayer.addWeaponComponent(current.weaponName, current.componentName)
-            cb(true, false)
+            cb(true, price)
         elseif current.weaponName == 'BODY_ARMOR' then
-            xPlayer.removeMoney(price)
+            xPlayer.removeAccountMoney(account, price)
             SetPedArmour(GetPlayerPed(source), GetPlayerMaxArmour(source))
 
-            cb(true, false)
+            cb(true, price)
+        elseif current.weaponCat == 'Throw' then
+            xPlayer.removeAccountMoney(account, price)
+            if xPlayer.hasWeapon(current.weaponName) then
+                xPlayer.addWeaponAmmo(current.weaponName, quantity)
+            else
+                xPlayer.addWeapon(current.weaponName, quantity)
+            end
+            cb(true, price)
         elseif xPlayer.hasWeapon(current.weaponName) then
-            if current.weaponCat == 'Throw' then
-                xPlayer.removeMoney(price)
-                xPlayer.addWeaponAmmo(current.weaponName, current.quantity or 1)
-
-                cb(true, false)
-            else
-                xPlayer.showNotification(_U('already_owned'))
-                cb(false)
-            end
+            xPlayer.showNotification(_U('already_owned'))
+            cb(false)
         else
-            if zone == 'LegalShop' then
-                xPlayer.removeMoney(price)
-                xPlayer.addWeapon(current.weaponName, current.quantity or 50)
+            xPlayer.removeAccountMoney(account, price)
+            xPlayer.addWeapon(current.weaponName, quantity)
 
-                cb(true, false)
-            else
-                xPlayer.removeAccountMoney('black_money', price)
-                xPlayer.addWeapon(current.weaponName, current.quantity or 50)
-
-                cb(true, false)
-            end
+            cb(true, price)
         end
     end
 end)

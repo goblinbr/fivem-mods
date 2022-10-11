@@ -272,7 +272,27 @@ function OpenShopMenu(wvalue, zone)
             local currentAmmo = GetPedAmmoByType(pedId, item.hash)
 
             if currentAmmo < maxAmmo then
-                table.insert(elements, {label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))), price = item.price, weaponName = item.name, weaponCat = item.cat, ammo = false, quantity = item.quantity, hash = item.hash})
+                local max = maxAmmo - currentAmmo
+                if item.quantity and item.quantity > 1 then
+                    max = math.ceil(max / item.quantity)
+                end
+
+                local menuItem = {
+                    label = ('%s - <span style="color: green;">%s</span>'):format(item.label, _U('shop_menu_item', ESX.Math.GroupDigits(item.price))),
+                    price = item.price,
+                    weaponName = item.name,
+                    weaponCat = item.cat,
+                    ammo = false,
+                    quantity = item.quantity,
+                    hash = item.hash,
+                    -- menu properties
+                    value = 1,
+                    type = 'slider',
+                    min = 1,
+                    max = max
+                }
+
+                table.insert(elements, menuItem)
             end
         end
     elseif wvalue == 'wea_melee' then
@@ -423,15 +443,15 @@ function OpenShopMenu(wvalue, zone)
         align = GetConvar('esx_MenuAlign', 'top-left'),
         elements = elements
     }, function(data, menu)
-        ESX.TriggerServerCallback('esx_advancedweaponshop:buyWeapon', function(bought, ammo)
+        ESX.TriggerServerCallback('esx_advancedweaponshop:buyWeapon', function(bought, price)
             if bought then
-                if ammo or data.current.weaponName == 'BODY_ARMOR' or data.current.componentName then
-                    DisplayBoughtAmmo(data.current.label, data.current.price)
+                if data.current.ammo or data.current.weaponName == 'BODY_ARMOR' or data.current.componentName then
+                    DisplayBoughtAmmo(data.current.label)
                 else
-                    DisplayBoughtScaleform(data.current.weaponName, data.current.price)
+                    DisplayBoughtScaleform(data.current.weaponName, price)
                 end
-                if ammo or data.current.componentName or wvalue == 'wea_throw' or wvalue == 'wea_misc' then
-                    if ammo and data.current.refill then
+                if data.current.ammo or data.current.componentName or wvalue == 'wea_throw' or wvalue == 'wea_misc' then
+                    if data.current.ammo and data.current.refill then
                         IsInShopMenu = false
                         menu.close()
                         OpenMainMenu(zone)
@@ -482,7 +502,7 @@ function DisplayBoughtScaleform(weaponName, price)
     end)
 end
 
-function DisplayBoughtAmmo(label, price)
+function DisplayBoughtAmmo(label)
     PlaySoundFrontend(-1, 'WEAPON_PURCHASE', 'HUD_AMMO_SHOP_SOUNDSET', false)
     ESX.ShowNotification(_U('ammo_bought', label))
 end
