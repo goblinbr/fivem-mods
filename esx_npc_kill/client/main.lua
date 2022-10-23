@@ -70,6 +70,15 @@ AddEventHandler('esx_status:loaded', function(status)
             SetPedMaxHealth(playerPedId, maxHealth)
             SetEntityHealth(playerPedId, maxHealth)
             SetPlayerMaxArmour(playerId, maxArmour)
+
+            local skillQty = level * Config.skillByLevel
+            StatSetInt(`MP0_SHOOTING_ABILITY`, skillQty, true)
+            StatSetInt(`MP0_STEALTH_ABILITY`, skillQty, true)
+            StatSetInt(`MP0_FLYING_ABILITY`, skillQty, true)
+            StatSetInt(`MP0_WHEELIE_ABILITY`, skillQty, true)
+            StatSetInt(`MP0_LUNG_CAPACITY`, skillQty, true)
+            StatSetInt(`MP0_STRENGTH`, skillQty, true)
+            StatSetInt(`MP0_STAMINA`, skillQty, true)
         end
     end)
 
@@ -99,22 +108,4 @@ AddEventHandler('esx_status:loaded', function(status)
     end, function(status)
     end)
 
-end)
-
-CreateThread(function()
-    while true do
-        Wait(50)
-
-        local playerId = PlayerId()
-        if playerId then
-            local stamina = GetPlayerStamina(playerId)
-            if stamina < 100.0 then
-                stamina = stamina + Config.staminaRegenByLevel * (level - 1)
-                if stamina > 100.0  then
-                    stamina = 100.0
-                end
-                SetPlayerStamina(playerId, stamina)
-            end
-        end
-    end
 end)
